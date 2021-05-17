@@ -1,0 +1,51 @@
+namespace Q {
+
+
+
+    open Microsoft.Quantum.Canon;
+
+
+    open Microsoft.Quantum.Intrinsic;
+
+
+
+
+
+
+
+    operation QuantumMain() : Unit {
+
+
+
+        // Run a quantum operation.
+           using ( q = Qubit() ) {
+            // Do stuff with the qubit q.
+            X(q); // Apply the X gate, Xq = |1>
+                    
+            H(q); // Apply the H gate, Hq = |0> - |1>
+                
+            H(q); // Apply the H gate, Hq = |1>
+            
+            X(q); // Apply the X gate, Hq = |0>
+            
+            let result = M(q); // Measure state
+            
+            Message($"Final state: {result}");
+
+/*-> Output .Final state: Zero
+If we do only H(q) and would measure it,
+the ouput could be: Released qubits are not in zero state.
+Result: One ,
+ The operation returns either One or Zero.*/
+    }
+
+
+
+}
+/*In Q#, qubits that have finished running a computation must be returned to the ∣0⟩\ket{0}∣0⟩ state before returning to the pool of available qubits.
+ This is to avoid having to confirm the state of each qubit before use.
+ Another important reason for this state reset is that the deallocated qubits are definitely not entangled with any qubits which may be still allocated.
+ This way, using deallocated qubits in other parts of the code will not harm the state of the qubits you are still using.
+
+The choice of the ∣0⟩\ket{0}∣0⟩ state as the state that all qubits begin in is by convention,
+ since both the ∣0⟩\ket{0}∣0⟩ and ∣1⟩\ket{1}∣1⟩ states are stable and measurements behave deterministically in both.*/
