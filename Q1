@@ -1,0 +1,112 @@
+using ( q = Qubit() ) { // q begins in |0> state
+    H(q); T(q); H(q);       // q is transformed to a superposition.
+    let result = M(q);      // q is measured.
+
+    Message($"Result: {result}");
+    if (result == Zero) {
+                            // q is already |0>
+    } else {
+      X(q);                 // q is returned to |0>
+    }
+} 
+
+
+
+
+Quantum measurement isn't gentle. An important way in which measurements in Q# reflect real quantum measurements is that once a qubit is measured, its state collapses into one of the two possible states: ∣0⟩\ket{0}∣0⟩ and ∣1⟩\ket{1}∣1⟩. Applying the measurement operation doesn’t only return the measurement result, it also changes the qubit to the state that corresponds to the received measurement result.
+
+This Q# operation below initializes a qubit, transforms it into a superposition using several quantum gates, and then applies a measurement. We can show the same quantum circuit in a more familiar way, too:
+
+Once the operation is finished, we need to deallocate the qubit and return it to the pool in the ∣0⟩\ket{0}∣0⟩ state. Use the if statement prepared in the operation below to ensure that the qubit q is always in the ∣0⟩\ket{0}∣0⟩ state by the end of the operation.
+
+What is the minimum number of gates you need to use in the conditional if statement?
+Q#
+1
+
+namespace Brilliant {
+
+2
+
+    open Microsoft.Quantum.Canon;
+
+3
+
+    open Microsoft.Quantum.Intrinsic;
+
+4
+
+​
+
+5
+
+    operation QuantumMain() : Unit {
+
+6
+
+        using ( q = Qubit() ) { // q begins in |0>
+
+7
+
+            H(q); T(q); H(q);   // The state is transformed to a superposition.
+
+8
+
+            
+
+9
+
+            let result = M(q);  // q is measured.
+
+10
+
+    
+
+11
+
+            Message($"Result: {result}");
+
+12
+
+            if (result == Zero) {
+
+13
+
+              // Perform an operation to return the qubit to |0>
+
+14
+
+            } else {
+
+15
+
+              // Perform an operation to return the qubit to |0>
+
+16
+
+            }
+
+17
+
+        } 
+
+18
+
+    }
+
+19
+
+}
+
+Output
+
+Result: Zero
+
+Explanation
+
+Correct answer: 111
+
+Even though the state that q is prepared in is some fairly complex superposition, once the qubit is measured, there are only two possible outcomes: either q has been measured and collapsed into the ∣0⟩\ket{0}∣0⟩ state, or it has been measured and collapsed into the ∣1⟩\ket{1}∣1⟩ state.
+
+In the first case, no further change to the qubit's state is necessary for it to finish the computation in the ∣0⟩\ket{0}∣0⟩ state. In the second case, the qubit's state must be flipped from ∣1⟩\ket{1}∣1⟩ to ∣0⟩\ket{0}∣0⟩ using the X\mathbf{X}X gate.
+
+This is the exact method that the Q# function MResetZ() implements to reset the state of a qubit to ∣0⟩\ket{0}∣0⟩.
