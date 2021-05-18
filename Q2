@@ -1,0 +1,22 @@
+Operation quantumMain(): Unit{
+for (i in 0 .. 5) {                 // This for loop repeats 6 times.
+		    using ( q = Qubit() ) {
+		        H(q); T(q); H(q);
+		        
+		        let result = M(q);
+
+		        Message($"Result: {result}");
+		        
+		        if (result == Zero) {
+		            // No operation.
+		        } else {
+		            X(q);
+		        }
+		    } 
+		}
+    }
+    
+
+In Q#, the result of a measurement is a Boolean variable: either One or Zero, corresponding to the quantum states ∣1⟩\ket{1}∣1⟩ and ∣0⟩\ket{0}∣0⟩.
+To keep track of these measurement results over repeated measurements, it’s often useful to convert these Booleans into integers 1 and 0. 
+We can do this using the ResultArrayAsInt() function.
