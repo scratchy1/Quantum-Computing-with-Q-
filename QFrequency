@@ -1,0 +1,25 @@
+open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Convert;
+
+    operation QuantumMain() : Unit {
+        mutable n = 0;
+        for (i in 0 .. 99) {    // This for loop repeats 100 times.
+            using ( q = Qubit() ) {
+                H(q); T(q); H(q);
+
+                let result = M(q);
+                let resultInt = ResultArrayAsInt([result]);
+
+                set n = n + resultInt;
+
+                if (result == Zero) {
+                    // No operation.
+                } else {
+                    X(q);
+                }
+            } 
+        }
+        Message($"Total: {n}");
+    }
+}
