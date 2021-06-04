@@ -1,0 +1,42 @@
+namespace Bla {
+    open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Intrinsic;
+
+    operation QuantumMain() : Unit {
+        using ( (query, target) = (Qubit[5], Qubit()) ) { 
+            // The state begins as x = |00000>, y = |0>
+
+            // Prepare quuery and target for phase query
+            StatePreparation(query, target);
+
+            // Apply an Oracle using query and target.
+            BVOracle(query, target);
+
+            MeasureAndMessage(target);
+            ResetAll(query); Reset(target);
+        }
+    }
+    operation StatePreparation(query : Qubit[], target : Qubit) : Unit {
+        // Prepare qubits for phase query.
+        for (i in 0 .. 4) {
+            H(query[i]);
+        }
+        X(target); 
+        H(target);
+    }
+    operation BVOracle(query : Qubit[], target : Qubit) : Unit {
+        // Define string a
+        let a = [1, 0, 0, 1, 0];
+
+        // Output |x, y + a.x mod 2>
+        for (i in 0 .. 4) {
+            if (a[i] == 1) {
+                CNOT(query[i], target);
+            }
+        }
+    }
+    operation MeasureAndMessage(target : Qubit) : Unit {
+        let resultTarget = M(target);
+        Message($"Target Qubit: {resultTarget}");
+    }
+}
