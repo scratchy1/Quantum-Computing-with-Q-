@@ -1,0 +1,29 @@
+namespace Bla {
+    open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Convert;
+
+    operation QuantumMain() : Unit {
+        // Define angle to rotate by and number of iterations
+        let theta = PI()/2.0;
+        let iterations = 5;
+        // Allocate a qubit which begins in the |0> state
+        using ( q = Qubit() ) { 
+            for (i in 1..iterations) {
+                // Rotate the state of qubit q by theta radians
+                Rx(theta,q);
+                // Measure the qubit
+                let result = M(q);
+                // Convert this measurement result into a 0/1 integer.
+                let m = ResultArrayAsInt([result]);
+                // Transform the result int into spin value
+                let s = 2 * m - 1;
+                // Return the spin  as a console message
+                Message($"Spin: {s}");
+                // Reset all the qubits to the |0> state
+                Reset(q);
+            }   
+        }
+    }
+}
