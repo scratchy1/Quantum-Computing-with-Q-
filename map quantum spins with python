@@ -1,0 +1,18 @@
+import qsharp
+import numpy as np
+from Bla.Quantum.Operations import SpinOperation
+
+# Define an array of angles and an empty array for the output
+angle_range = np.linspace(0.0, 2 * np.pi, 20)
+data = [0]*20
+
+# Run the SpinAnsatz operation, providing the inputs above.
+for i in range(20):
+    data[i] = SpinOperation.simulate(theta = angle_range[i], iterations = 1000)
+
+# Output the resulting average spin values as a plot.
+import matplotlib.pyplot as plt
+plt.xlabel('Angle [radians]')
+plt.ylabel('Average value')
+plt.plot(angle_range, data)
+plt.savefig("figure.png")
